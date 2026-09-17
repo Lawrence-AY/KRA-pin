@@ -4,3 +4,6 @@ npm-debug.log*
 .DS_Store
 .extra.md
 extra.md
+ke.json
+docs/
+KRA-API-Integration-Guide.md

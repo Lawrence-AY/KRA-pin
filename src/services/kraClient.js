@@ -126,6 +126,13 @@ async function postToKra(endpointName, payload) {
       mismatch.fault = error.response.data.fault;
       throw mismatch;
     }
+
+    const fault = error.response?.data?.fault;
+    const errorCode = fault?.detail?.errorcode || fault?.faultcode;
+    if (errorCode === 'messaging.adaptors.http.flow.UnexpectedEOFAtTarget' || fault?.faultstring?.includes('Unexpected EOF')) {
+      throw gatewayError(502, 'KRA_UPSTREAM_UNAVAILABLE', 'KRA API gateway could not reach the upstream service. This is a temporary KRA infrastructure issue. Please retry later.');
+    }
+
     throw error;
   }
 }
